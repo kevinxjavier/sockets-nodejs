@@ -21,6 +21,11 @@ io.on('connection', (cliente) => {
 
     cliente.on('miMensaje1', (mensaje, callback) => {
         console.log(mensaje);
+
+        // Enviando a todos los Clientes conectados
+        cliente.broadcast.emit('miMensaje1', 'Recibido from Server ' + mensaje);
+
+        // Este callback se le envia al Cliente que ejecuto socket.emit()
         callback('Server Respondiendo: se recibio mensaje del Cliente exitosamente...');    // Devolviendo respuesta a Cliente
     });
 

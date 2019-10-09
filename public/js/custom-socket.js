@@ -16,6 +16,10 @@ socket.on('disconnect', function() {
     console.log('Perdimos coneccion con el Servidor...');
 });
 
+socket.on('miMensaje1', function(mensaje) {
+    console.log(mensaje);
+});
+
 socket.on('usuario', function(mensaje) {
     console.log(mensaje);
 });
