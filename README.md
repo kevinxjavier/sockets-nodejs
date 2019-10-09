@@ -10,8 +10,10 @@ npm install
 
 # Ramas
 
-01-version: Socket Version1: Configuracion Basica
+01-version: Socket Version1: Configuracion Basica.
 
-02-version: Socket Version2: Retroalimentacion de emision de mensajes Cliente-Servidor y Servidor-Cliente
+02-version: Socket Version2: Retroalimentacion de emision de mensajes Cliente-Servidor y Servidor-Cliente.
 
-03-version: Organizando codigo frontend y banckend
+03-version: Organizando codigo frontend y banckend.
+
+04-version: Agregando broadcasting de mensajes a todos los Clientes.
