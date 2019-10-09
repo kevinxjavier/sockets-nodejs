@@ -7,3 +7,11 @@ Recuerden que deben de reconstruir los módulos de node con el comando
 ```
 npm install
 ```
+
+# Ramas
+
+01-version: Socket Version1: Configuracion Basica
+
+02-version: Socket Version2: Retroalimentacion de emision de mensajes Cliente-Servidor y Servidor-Cliente
+
+03-version: Organizando codigo frontend y banckend
