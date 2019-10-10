@@ -1,8 +1,11 @@
 # Notas:
 
-Este es un pequeño servidor de express listo para ejecutarse y servir la carpeta public en la web.
-
+Servidor express sirve el contenido de la carpeta public en la web.
 
 ```
 npm install
 ```
+
+# Rama
+
+02-version: Socket Version2: Retroalimentacion de emision de mensajes Cliente-Servidor y Servidor-Cliente.
