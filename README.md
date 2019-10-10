@@ -1,8 +1,12 @@
 # Notas:
 
-Este es un pequeño servidor de express listo para ejecutarse y servir la carpeta public en la web.
+Servidor express sirve el contenido de la carpeta public en la web.
 
 
 ```
 npm install
 ```
+
+# Rama
+
+03-version: Organizando codigo frontend y banckend.
