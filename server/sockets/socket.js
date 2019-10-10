@@ -3,6 +3,9 @@
 // Forma 2
 const { io } = require('../server');
 
+const { TicketControl } = require('../classes/ticket-control');
+const ticketControl = new TicketControl();
+
 /*
     - En el HTML, se ejecuta socket.on('connect'), socket.on('disconnect') 
         y socket.on('mensaje') así no se haya refrescado la página. "Hay 
@@ -19,20 +22,7 @@ io.on('connection', (cliente) => {
         console.log('Cliente desconectado...');
     });
 
-    cliente.on('miMensaje1', (mensaje, callback) => {
-        console.log(mensaje);
-
-        // Enviando a todos los Clientes conectados
-        cliente.broadcast.emit('miMensaje1', 'Recibido from Server ' + mensaje);
-
-        // Este callback se le envia al Cliente que ejecuto socket.emit()
-        callback('Server Respondiendo: se recibio mensaje del Cliente exitosamente...');    // Devolviendo respuesta a Cliente
+    cliente.on('siguienteTicket', (data, callback) => {
+        callback(ticketControl.siguiente());
     });
-
-    cliente.on('usuario', (mensaje) => {
-        console.log(mensaje);
-    });
-
-    // emmit() para Enviar Informacion
-    cliente.emit('usuario', {usuario: 'administrador', mensaje: 'Welcome'});
 });
