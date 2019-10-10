@@ -1,9 +1,13 @@
 # Notas:
 
-Este es un pequeño servidor de express listo para ejecutarse y servir la carpeta public en la web.
+Servidor express sirve el contenido de la carpeta public en la web.
 
 Recuerden que deben de reconstruir los módulos de node con el comando
 
 ```
 npm install
 ```
+
+# Rama
+
+01-version: Socket Version1: Configuracion Basica.
