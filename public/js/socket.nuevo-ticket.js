@@ -1,5 +1,6 @@
 // Estableciendo la conexion con el Socket
 var socket = io();
+
 var label = $('#lblNuevoTicket');
 
 socket.on('connect', function() {
@@ -11,7 +12,7 @@ socket.on('disconnect', function() {
 });
 
 socket.on('ticketActual', function(ticketActual) {
-    label.text(ticketActual);
+    label.text(ticketActual.ultimo);
 });
 
 /* JQuery ejecutar todos los botones en el evento de click <button>. 

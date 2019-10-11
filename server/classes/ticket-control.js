@@ -29,6 +29,10 @@ class TicketControl {
         return `Ticket ${ this.ultimo }`;
     }
 
+    getUltimos4() {
+        return this.ultimos4Tickets;
+    }
+
     siguiente() {
         this.ultimo += 1;
         let ticket = new Ticket(this.ultimo, null);
@@ -52,7 +56,7 @@ class TicketControl {
 		// Ambas soluciones son validas
 		this.ultimos4Tickets.splice(4);                         // Eliminando los elementos de la posicion [4] hacia arriba del arreglo al mismo tiempo que devuelve los elementos a eliminar.
 		/*if (this.ultimos4Tickets.length > 4) { 
-			this.ultimos4Tickets.splice(-1, 1)	// Eliminando el elemento de la posicion [4] al mismo tiempo que devuelve el elemento a eliminar
+			this.ultimos4Tickets.splice(-1, 1)	// Eliminando el ultimo elemento (el de la posicion 4 por la condicio del if) al mismo tiempo que devuelve el elemento a eliminar
 		}*/
 
 		console.log('Ultimos4Tickets ' + JSON.stringify(this.ultimos4Tickets));

@@ -26,8 +26,8 @@ io.on('connection', (cliente) => {
         callback(ticketControl.siguiente());
     });
 
-    cliente.emit('ticketActual', ticketControl.getUltimo());
-
+    cliente.emit('ticketActual', { ultimo: ticketControl.getUltimo(), ultimos4: ticketControl.getUltimos4() } );
+    
     cliente.on('atenderTicket', (data, callback) => {
         if (!data.escritorio) 
             return callback('No hay escritorio, debe enviarlo');
@@ -38,5 +38,7 @@ io.on('connection', (cliente) => {
             return callback('No hay tickets');
 
         callback(atenderTicket.numero);
+
+        cliente.broadcast.emit('ultimos4', { ultimos4: ticketControl.getUltimos4() } );
     });
 });
