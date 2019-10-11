@@ -23,14 +23,6 @@ module.exports.io = socketIO(server);
 
 require('./sockets/socket');
 
-io.on('connection', (cliente) => {
-    console.log('Cliente conectado...');
-
-    cliente.on('disconnect', ()=> {
-        console.log('Cliente desconectado...');
-    });
-})
-
 server.listen(port, (err) => {
     if (err) 
         throw new Error(err);
