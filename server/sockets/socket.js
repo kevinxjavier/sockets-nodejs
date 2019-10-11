@@ -26,7 +26,7 @@ io.on('connection', (cliente) => {
         callback(ticketControl.siguiente());
     });
 
-    cliente.emit('ticketActual', { ultimo: ticketControl.getUltimo(), ultimos4: ticketControl.getUltimos4() } );
+    cliente.emit('ticketActual', { broadcast: false, ultimo: ticketControl.getUltimo(), ultimos4: ticketControl.getUltimos4() } );
     
     cliente.on('atenderTicket', (data, callback) => {
         if (!data.escritorio) 
@@ -39,6 +39,6 @@ io.on('connection', (cliente) => {
 
         callback(atenderTicket.numero);
 
-        cliente.broadcast.emit('ultimos4', { ultimos4: ticketControl.getUltimos4() } );
+        cliente.broadcast.emit('ticketActual', { broadcast: true, ultimos4: ticketControl.getUltimos4() } );
     });
 });

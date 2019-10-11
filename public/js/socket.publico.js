@@ -14,17 +14,21 @@ var lblEscritorio4 = $('#lblEscritorio4');
 var lblTickets = [lblTicket1, lblTicket2, lblTicket3, lblTicket4];
 var lblEscritorios = [lblEscritorio1, lblEscritorio2, lblEscritorio3, lblEscritorio4];
 
-
 socket.on('ticketActual', function(data) {
     console.log(data);
-    actualizarHTML(data.ultimos4);
-});
 
-socket.on('ultimos4', function(data) {
+    if (data.broadcast) {
+        let audio = new Audio('audio/new-ticket.mp3');
+        audio.play();
+    } 
     actualizarHTML(data.ultimos4);
 });
 
 function actualizarHTML (ultimos4) {
+    for (let i = 0; i < 4; i++) {
+        lblTickets[i].text('');
+        lblEscritorios[i].text('');
+    }
     for (let i = 0; i < ultimos4.length; i++) {
         lblTickets[i].text('Tickets ' + ultimos4[i].numero);
         lblEscritorios[i].text('Escritorio ' + ultimos4[i].escritorio);
