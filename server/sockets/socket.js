@@ -25,4 +25,18 @@ io.on('connection', (cliente) => {
     cliente.on('siguienteTicket', (data, callback) => {
         callback(ticketControl.siguiente());
     });
+
+    cliente.emit('ticketActual', ticketControl.getUltimo());
+
+    cliente.on('atenderTicket', (data, callback) => {
+        if (!data.escritorio) 
+            return callback('No hay escritorio, debe enviarlo');
+
+        let atenderTicket = ticketControl.atentenderTicket(data.escritorio);
+
+        if(!atenderTicket)
+            return callback('No hay tickets');
+
+        callback(atenderTicket.numero);
+    });
 });
