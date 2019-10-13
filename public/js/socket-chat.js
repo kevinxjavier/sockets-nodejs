@@ -8,6 +8,7 @@ if(!params.has('nombre') || !params.has('sala')) {
     window.location = 'index.html';
     throw new Error('Nombre y Sala son necesarios');    
 }
+
 var nombre = params.get('nombre');
 var sala = params.get('sala');
 
@@ -18,6 +19,7 @@ socket.on('connect', function() {
     // Envia al servidor
     socket.emit('entrarChat', {nombre, sala}, function(res) {
         console.log(res);
+        renderizarUsuarios(res.usuarios);
     });
 });
 
@@ -27,10 +29,15 @@ socket.on('disconnect', function() {
 
 socket.on('listaUsuarios', function(res) {
     console.log(res);
+    renderizarUsuarios(res.usuarios);
+    renderizarMensajes(res, false);
+    scrollBottom();
 });
 
 // Se puede ejecutar esto directamente en la consola del navegador: socket.emit('enviarMensaje', 'Hola');
 socket.on('recibirMensajePublico', function(res) {
+    renderizarMensajes(res, false);
+    scrollBottom();
     console.log(res);
 });
 

@@ -18,7 +18,8 @@ io.on('connection', (client) => {
 
         usuario.addUsuario(client.id, data.nombre, data.sala);
 
-        let res = mensajeFormato('Admin', `${data.nombre} con id ${client.id} acaba de conectarse`, usuario.getUsuarioPorSala(data.sala));
+        //let res = mensajeFormato('Admin', `${data.nombre} con id ${client.id} acaba de conectarse`, usuario.getUsuarioPorSala(data.sala));
+        let res = mensajeFormato('Admin', `${data.nombre} acaba de conectarse`, usuario.getUsuarioPorSala(data.sala));
         // El broadcast se envia a los otros client.id no al mismo que lo ejecuto. Para eso le enviamos el callback.
         client.broadcast.to(data.sala).emit('listaUsuarios', res);
 
@@ -31,7 +32,8 @@ io.on('connection', (client) => {
         if (usuarioBorrado) {
             console.log(`Usuario desconectandose ${usuarioBorrado.nombre} con id ${usuarioBorrado.id}`);
 
-            let res = mensajeFormato('Admin', `${usuarioBorrado.nombre} con id ${usuarioBorrado.id} ha abandonado el chat`, usuario.getUsuarioPorSala(usuarioBorrado.sala));
+            //let res = mensajeFormato('Admin', `${usuarioBorrado.nombre} con id ${usuarioBorrado.id} ha abandonado el chat`, usuario.getUsuarioPorSala(usuarioBorrado.sala));
+            let res = mensajeFormato('Admin', `${usuarioBorrado.nombre} ha abandonado el chat`, usuario.getUsuarioPorSala(usuarioBorrado.sala));
             client.broadcast.to(usuarioBorrado.sala).emit('listaUsuarios', res);
         } else {
             console.log(`Se ha tratado de desconectar ${client.id} sin \"El nombre y sala que son necesarios\"`);
@@ -39,10 +41,11 @@ io.on('connection', (client) => {
     });
 
     // Se puede ejecutar esto directamente en la consola del navegador: socket.emit('enviarMensajePublico', 'Hola');
-    client.on('enviarMensajePublico', (mensaje) => {
+    client.on('enviarMensajePublico', (mensaje, callback) => {
         let nombre = usuario.getUsuario(client.id);
         let res = mensajeFormato(nombre, mensaje, null);
-        client.broadcast.to(tonombre.sala).emit('recibirMensajePublico', res);
+        client.broadcast.to(nombre.sala).emit('recibirMensajePublico', res);    // Envio el mensaje a todos 
+        callback(res);                                                          // Me envio el mensaje a mi
     });
 
     // Se puede ejecutar esto directamente en la consola del navegador: socket.emit('recibirMensajePrivado', {id: '464dsfds', mensaje: 'Hola'});

@@ -8,7 +8,7 @@ npm install
 
 # Rama
 
-07-version-chat: Version de Sockets Sala de Chats (eviando mensajes broadcast, mensajes a un id particular y a un grupo). Sin interfaz grafica.
+07-version-chat: Version de Sockets Sala de Chats (eviando mensajes broadcast, mensajes a un id particular y a un grupo). Con interfaz grafica.
 
 # Uso Navegador
 
