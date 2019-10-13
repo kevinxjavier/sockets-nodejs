@@ -20,7 +20,7 @@ class UsuarioLista {
     }
 
     getUsuarioPorSala(sala) {
-
+        return this.usuarioList.filter(usuario => usuario.sala === sala);
     }
 
     deleteUsuario(id) {
