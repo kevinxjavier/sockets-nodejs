@@ -14,8 +14,6 @@ io.on('connection', (client) => {
             return callback({status: 'Failed', mensaje: 'El nombre y sala son necesarios'});
         }
 
-        client.join(data.sala);
-
         let usuarioNombre = usuario.addUsuario(client.id, data.nombre, data.sala);
 
         let res = mensajeFormato('Admin', `${data.nombre} con id ${client.id} acaba de conectarse`, usuarioNombre);
