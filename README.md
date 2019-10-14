@@ -24,4 +24,7 @@ npm install
 
 07-version-chat: Version de Sockets Sala de Chats (eviando mensajes broadcast, mensajes a un id particular y a un grupo). Sin interfaz grafica.
 
-08-version-chat: Version de Sockets Sala de Chats (eviando mensajes broadcast, mensajes a un id particular y a un grupo). Con interfaz grafica.
+
+08-version-chat: Version de Sockets Sala de Chats (eviando mensajes broadcast, mensajes a un id particular y a un grupo). Con interfaz grafica. "Version chat publico sin implementacion de chat usuario privado".
+
+09-version-chat: Version de Sockets Sala de Chats (eviando mensajes broadcast, mensajes a un id particular y a un grupo). Con interfaz grafica. "Version chat publico con implementacion de chat usuario privado".
