@@ -23,7 +23,8 @@ io.on('connection', (client) => {
         // El broadcast se envia a los otros client.id no al mismo que lo ejecuto. Para eso le enviamos el callback.
         client.broadcast.to(data.sala).emit('listaUsuarios', res);
 
-        callback({usuario: 'Admin', mensaje: `Se ha conectado como ${data.nombre} con id ${client.id}`, usuarios: usuario.getUsuarioPorSala(data.sala)});
+        //callback({usuario: 'Admin', mensaje: `Se ha conectado como ${data.nombre} con id ${client.id}`, usuarios: usuario.getUsuarioPorSala(data.sala)});
+        callback({usuario: 'Admin', mensaje: client.id, usuarios: usuario.getUsuarioPorSala(data.sala)});
     });
 
     client.on('disconnect', () => {
@@ -49,10 +50,11 @@ io.on('connection', (client) => {
     });
 
     // Se puede ejecutar esto directamente en la consola del navegador: socket.emit('recibirMensajePrivado', {id: '464dsfds', mensaje: 'Hola'});
-    client.on('recibirMensajePrivado', (body) => {
+    client.on('recibirMensajePrivado', (body, callback) => {
         let nombre = usuario.getUsuario(client.id);
-        let res = mensajeFormato(nombre, body.mensaje, null);
-        client.broadcast.to(body.id).emit('recibirMensajePrivado', res);
+        let res = mensajeFormato(nombre, body.mensaje, body.id);
+        client.broadcast.to(body.id).emit('recibirMensajePrivado', res);        // Envio el mensaje a id ussurio
+        callback(res);                                                          // Me envio el mensaje a mi
     });
     
 });

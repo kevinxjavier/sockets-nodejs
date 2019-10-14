@@ -17,9 +17,10 @@ socket.on('connect', function() {
     console.log('Conectado al servidor');
 
     // Envia al servidor
-    socket.emit('entrarChat', {nombre, sala}, function(res) {
-        console.log(res);
+    socket.emit('entrarChat', {nombre, sala}, function(res) {        
+        miID = res.mensaje;        
         renderizarUsuarios(res.usuarios);
+        console.log('sc-log-23: ' + JSON.stringify(res));
     });
 });
 
@@ -27,21 +28,23 @@ socket.on('disconnect', function() {
     console.log('Perdimos conexión con el servidor');
 });
 
-socket.on('listaUsuarios', function(res) {
-    console.log(res);
+socket.on('listaUsuarios', function(res) {    
     renderizarUsuarios(res.usuarios);
-    renderizarMensajes(res, false);
+    renderizarMensajes(res, false, false);
     scrollBottom();
+    console.log('sc-log-35: ' + JSON.stringify(res));
 });
 
 // Se puede ejecutar esto directamente en la consola del navegador: socket.emit('enviarMensaje', 'Hola');
 socket.on('recibirMensajePublico', function(res) {
-    renderizarMensajes(res, false);
+    renderizarMensajes(res, false, false);
     scrollBottom();
-    console.log(res);
+    console.log('sc-log-42: ' + JSON.stringify(res));
 });
 
 // Se puede ejecutar esto directamente en la consola del navegador: socket.emit('recibirMensajePrivado', {id: '464dsfds', mensaje: 'Hola'});
-socket.on('recibirMensajePrivado', function(res) {
-    console.log(res);
+socket.on('recibirMensajePrivado', function(res) {    
+    renderizarMensajes(res, false, true);
+    scrollBottom();
+    console.log('sc-log-49: ' + JSON.stringify(res));
 });

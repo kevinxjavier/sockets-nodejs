@@ -9,9 +9,17 @@ var txtMensaje = $('#txtMensaje');
 var divChatbox = $('#divChatbox');
 
 // ===================================================
+// Mensaje Privado
+var miID = '';
+var idusuarioMensajePrivado = '';
+
+// ===================================================
 // Funciones para renderizar usuarios
 
 function renderizarUsuarios(usuarios) {
+
+    usuarios = usuarios.filter(u => u.id != miID);
+
     document.getElementById('sala2').innerHTML = params.get('sala');
     let html = '';
     
@@ -21,15 +29,20 @@ function renderizarUsuarios(usuarios) {
 
     for (let i = 0; i < usuarios.length; i++) {
         html +='<li>';
-        html +='    <a data-id="' + usuarios[i].id + '" href="javascript:void(0)"><img src="assets/images/users/1.jpg" alt="user-img" class="img-circle"> <span>' + usuarios[i].nombre + '<small class="text-success">online</small></span></a>';
+        html +='    <span id="usuario_mensaje_' + usuarios[i].id + '">*</span><a data-id="' + usuarios[i].id + '" href="javascript:void(0)"><img src="assets/images/users/1.jpg" alt="user-img" class="img-circle"> <span>' + usuarios[i].nombre + '<small class="text-success">online</small></span></a>';
         //html +='    <a data-id="' + usuarios[i].id + '" href="javascript:void(0)" onclick=callIDUser("' +usuarios[i].id+ '")><img src="assets/images/users/1.jpg" alt="user-img" class="img-circle"> <span>' + usuarios[i].nombre + '<small class="text-success">online</small></span></a>';
         html +='</li>';
     }
     divUsuarios.html(html);
     //document.getElementById('divUsuarios').innerHTML = html;
+
+    for (let i = 0; i < usuarios.length; i++) {
+        document.getElementById("usuario_mensaje_" + usuarios[i].id).style.visibility = "hidden";
+    }
+    
 }
 
-function renderizarMensajes(mensaje, yo) { 
+function renderizarMensajes(mensaje, yo, mensajePrivado) { 
     let html = '';
     let fecha = new Date(mensaje.fecha);
     let hora = fecha.getHours() + ':' + fecha.getMinutes();
@@ -39,30 +52,31 @@ function renderizarMensajes(mensaje, yo) {
         adminClass = 'danger';
     }
 
-    if(yo) {
-        console.log('yo ' + JSON.stringify(mensaje));
-        html += '<li class="reverse">';
-        html += '    <div class="chat-content">';
-        html += '        <h5>' + mensaje.nombre.nombre + '</h5>';
-        html += '        <div class="box bg-light-inverse">' + mensaje.mensaje+ '</div>';
-        html += '    </div>';
-        html += '    <div class="chat-img"><img src="assets/images/users/5.jpg" alt="user" /></div>';
-        html += '    <div class="chat-time">' + hora + '</div>';
-        html += '</li>';
-    } else {
-        console.log('otro ' + JSON.stringify(mensaje));
-        html += '<li class="animated fadeIn">';
-        if(mensaje.nombre.nombre) {
-            html += '    <div class="chat-img"><img src="assets/images/users/1.jpg" alt="user" /></div>';
+    if (!mensajePrivado || (mensaje.nombre.id === miID || mensaje.usuarios === miID)) {
+        if(yo) {            
+            html += '<li class="reverse">';
+            html += '    <div class="chat-content">';
+            html += '        <h5>' + mensaje.nombre.nombre + '</h5>';
+            html += '        <div class="box bg-light-inverse">' + mensaje.mensaje+ '</div>';
+            html += '    </div>';
+            html += '    <div class="chat-img"><img src="assets/images/users/5.jpg" alt="user" /></div>';
+            html += '    <div class="chat-time">' + hora + '</div>';
+            html += '</li>';
+
+        } else {
+            html += '<li class="animated fadeIn">';
+            if(mensaje.nombre.nombre) {
+                html += '    <div class="chat-img"><img src="assets/images/users/1.jpg" alt="user" /></div>';
+            }
+            html += '    <div class="chat-content">';
+            html += '        <h5>' + ((mensaje.nombre.nombre) ? mensaje.nombre.nombre : mensaje.nombre) + '</h5>';
+            html += '        <div class="box bg-light-' + adminClass + '">' + mensaje.mensaje+ '</div>';
+            html += '    </div>';
+            html += '    <div class="chat-time">' + hora + '</div>';
+            html += '</li>';
+            document.getElementById('usuario_mensaje_' + mensaje.nombre.id).style.visibility = 'visible';
         }
-        html += '    <div class="chat-content">';
-        html += '        <h5>' + ((mensaje.nombre.nombre) ? mensaje.nombre.nombre : mensaje.nombre) + '</h5>';
-        html += '        <div class="box bg-light-' + adminClass + '">' + mensaje.mensaje+ '</div>';
-        html += '    </div>';
-        html += '    <div class="chat-time">' + hora + '</div>';
-        html += '</li>';
     }
-    
     divChatbox.append(html);
 }
 
@@ -93,8 +107,11 @@ divUsuarios.on('click', 'a', function() {
 
     // If Existe un tag 'a' que contiene el nombre de la sala y no tiene el atributo personalizado data-id=""
     if (id) {
-        console.log(id);
+        console.log('scj-log-102: ' + id);
+        idusuarioMensajePrivado = id;
         divChatbox.html('');
+    } else {
+        idusuarioMensajePrivado = '';   // Pulso en tag a donde no se envia data-id
     }
 });
 
@@ -111,10 +128,20 @@ frmEnviar.on('submit', function(event) {
         return;
     }
 
-    socket.emit('enviarMensajePublico', txtMensaje.val(), function(res) {
-        txtMensaje.val('').focus();
-        renderizarMensajes(res, true);
-        scrollBottom();
-        console.log(res);
-    });
+    if (idusuarioMensajePrivado !== '') {
+        socket.emit('recibirMensajePrivado', {id: idusuarioMensajePrivado, mensaje: txtMensaje.val()}, function(res) {
+            txtMensaje.val('').focus();
+            renderizarMensajes(res, true, true);
+            scrollBottom();
+            console.log('scj-log-126: ' + JSON.stringify(res));
+        });
+    } else {
+        socket.emit('enviarMensajePublico', txtMensaje.val(), function(res) {
+            txtMensaje.val('').focus();
+            renderizarMensajes(res, true, false);
+            scrollBottom();
+            console.log('scj-log-133: ' + JSON.stringify(res));
+        });
+    }
+    
 });
